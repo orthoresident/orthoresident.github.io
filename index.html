@@ -837,7 +837,7 @@ function doPost(e) {
     editingId = null;
     document.getElementById('modalTitle').textContent = 'Add New Patient';
     FIELDS.forEach(f => { const el=document.getElementById('f_'+f); if(el) el.value=''; });
-    document.getElementById('datefilterpopup').classList.add('active');
+    document.getElementById('dateFilterPopup').classList.add('active');
   }
 
   function openEditModal(id) {
