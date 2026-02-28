@@ -44,7 +44,7 @@
   }
   body.light .stat-card         { background:rgba(255,255,255,0.9); box-shadow:0 1px 6px rgba(0,0,0,0.07); }
   body.light .sync-status       { background:rgba(255,255,255,0.85); }
-  body.light .table-scroll      { background:#fff; border-color:rgba(0,0,0,0.1); box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+  body.light .table-wrapper     { background:#fff; border-color:rgba(0,0,0,0.1); box-shadow:0 2px 10px rgba(0,0,0,0.05); }
   body.light .header-row        { background:rgba(37,99,235,0.08) !important; border-bottom-color:rgba(37,99,235,0.15); }
   body.light .header-row th     { color:var(--accent-light) !important; }
   body.light .header-row th:hover { color:#1e293b; }
@@ -159,8 +159,7 @@
   .search-icon { position:absolute; left:13px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:0.95rem; }
 
   /* Table */
-  .table-scroll { overflow-x:auto; border-radius:16px; border:1px solid var(--border); background:rgba(255,255,255,0.02); }
-  .table-wrapper { overflow:visible; }
+  .table-wrapper { overflow-x:auto; border-radius:16px; border:1px solid var(--border); background:rgba(255,255,255,0.02); }
   table { width:100%; border-collapse:collapse; min-width:1600px; direction:rtl; }
 
   /* Header row */
@@ -302,8 +301,7 @@
     .logo-icon { width:24px !important; height:24px !important; font-size:12px !important; }
     .print-header-info { display:flex !important; justify-content:space-between; font-size:7pt !important; color:rgba(255,255,255,0.5); margin-bottom:4px; }
 
-    .table-scroll { border-radius:0 !important; overflow:visible !important; border:1px solid rgba(37,99,235,0.3) !important; width:100% !important; }
-    .table-wrapper { overflow:visible !important; }
+    .table-wrapper { border-radius:0 !important; overflow:visible !important; border:1px solid rgba(37,99,235,0.3) !important; width:100% !important; }
     table { min-width:unset !important; width:100% !important; table-layout:fixed !important; border-collapse:collapse !important; font-size:7pt !important; }
     th, td, .badge, .room-cell, .name-cell { font-size:7pt !important; line-height:1.3 !important; }
     .header-row { background:rgba(37,99,235,0.45) !important; }
@@ -389,29 +387,8 @@
   </div>
 
   <div class="print-header-info" style="display:none" id="printHeaderInfo"></div>
-  <div class="table-scroll">
   <div class="table-wrapper">
     <table id="patientTable">
-      <colgroup>
-        <col style="width:3%">   <!-- checkbox -->
-        <col style="width:4%">   <!-- Room (narrow) -->
-        <col style="width:7%">   <!-- Admission -->
-        <col style="width:10%">  <!-- Name (wide) -->
-        <col style="width:3%">   <!-- Age (narrow) -->
-        <col style="width:12%">  <!-- Diagnosis (wide) -->
-        <col style="width:10%">  <!-- Decision (wide) -->
-        <col style="width:3.5%"> <!-- Hb (narrow) -->
-        <col style="width:3.5%"> <!-- PLT (narrow) -->
-        <col style="width:3.5%"> <!-- INR (narrow) -->
-        <col style="width:4%">   <!-- LFT (narrow) -->
-        <col style="width:4%">   <!-- RFT (narrow) -->
-        <col style="width:3.5%"> <!-- ABO (narrow) -->
-        <col style="width:4%">   <!-- VIR (narrow) -->
-        <col style="width:7%">   <!-- Anesthesia -->
-        <col style="width:5%">   <!-- Skin -->
-        <col style="width:11%">  <!-- Notes (wide) -->
-        <col style="width:6%">   <!-- Actions -->
-      </colgroup>
       <thead>
         <!-- Column headers -->
         <tr class="header-row">
@@ -478,7 +455,6 @@
       <div class="icon">🏥</div>
       <p>No patient records. Add a patient or sync from Google Sheets.</p>
     </div>
-  </div>
   </div>
 </div>
 
@@ -764,7 +740,7 @@ function doPost(e) {
         <tr data-id="${p.id}">
           <td class="td-center select-col"><input type="checkbox" class="row-check" value="${p.id}" onchange="updateCheckAllState()"></td>
           <td class="room-cell">${esc(p.room)}</td>
-          <td>${p.admission ? esc(p.admission) : esc('')}</td>
+          <td>${p.admission ? esc(p.admission.split('T')[0]) : esc('')}</td>
           <td class="name-cell">${esc(p.name)}</td>
           <td>${esc(p.age)}</td>
           <td>${esc(p.diagnosis)}</td>
@@ -934,7 +910,7 @@ function doPost(e) {
       const json = await res.json();
       if (json.data) {
         patients = json.data.map((row,i) => ({
-          id:i+1, room:row.Room||'', admission:(row.Admission||'').toString().split('T')[0], name:row.Name||'', age:row.Age||'',
+          id:i+1, room:row.Room||'', admission:row.Admission||'', name:row.Name||'', age:row.Age||'',
           diagnosis:row.Diagnosis||'', decision:row.Decision||'',
           hb:row.Hb||'', plt:row.Plt||'', inr:row.INR||'',
           lft:row.LFT||'', rft:row.RFT||'', abo:row.ABO||'',
@@ -1126,5 +1102,4 @@ function doPost(e) {
   renderTable();
 </script>
 </body>
-        </html>
-
+            </html>
