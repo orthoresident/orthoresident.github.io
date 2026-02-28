@@ -657,7 +657,7 @@ function doPost(e) {
 <script>
   // ── State ────────────────────────────────────────────────────
   let patients  = JSON.parse(localStorage.getItem('patients')  || '[]');
-  let sheetsUrl = 'https://script.google.com/macros/s/AKfycbyqfAe-xJ7wMdIa2yDa_3NUPOqejGAJ-luk1G8WuxJkqhAOXl7YgngUCoiVi0HSNvt6hw/exec';
+  let sheetsUrl = localStorage.getItem('sheetsUrl') || 'https://script.google.com/macros/s/AKfycbyqfAe-xJ7wMdIa2yDa_3NUPOqejGAJ-luk1G8WuxJkqhAOXl7YgngUCoiVi0HSNvt6hw/exec';
   let editingId = null;
   let sortKey   = 'room';
   let sortAsc   = true;
