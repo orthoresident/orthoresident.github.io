@@ -472,7 +472,7 @@
       </div>
       <div class="form-group two-col">
         <label>Date of Admission</label>
-        <input type="text" id="f_admission">
+        <input type="date" id="f_admission">
       </div>
       <div class="form-group two-col">
         <label>Name *</label>
@@ -740,7 +740,7 @@ function doPost(e) {
         <tr data-id="${p.id}">
           <td class="td-center select-col"><input type="checkbox" class="row-check" value="${p.id}" onchange="updateCheckAllState()"></td>
           <td class="room-cell">${esc(p.room)}</td>
-          <td>${p.admission ? esc(p.admission) : esc('')}</td>
+          <td>${p.admission ? esc(p.admission.split('T')[0]) : esc('')}</td>
           <td class="name-cell">${esc(p.name)}</td>
           <td>${esc(p.age)}</td>
           <td>${esc(p.diagnosis)}</td>
