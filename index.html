@@ -846,6 +846,7 @@ function doPost(e) {
   }
 
   function openEditModal(id) {
+    id = parseInt(id);
     const p = patients.find(x=>x.id===id); if(!p) return;
     editingId = id;
     document.getElementById('modalTitle').textContent = 'Edit Patient Record';
@@ -865,7 +866,8 @@ function doPost(e) {
     const data = getFormData();
     if (!data.name) { showToast('❌ Name is required','error'); return; }
     if (editingId) {
-      const idx = patients.findIndex(p=>p.id===editingId);
+      const idx = patients.findIndex(p=>parseInt(p.id)===parseInt(editingId));
+      if (idx === -1) { showToast('❌ Patient not found','error'); return; }
       patients[idx] = { ...patients[idx], ...data };
       syncToSheets('update', patients[idx]);
       showToast('✅ Patient record updated','success');
@@ -1111,3 +1113,4 @@ function doPost(e) {
 </script>
 </body>
         </html>
+
