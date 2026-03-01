@@ -749,7 +749,7 @@ function doPost(e) {
           <td class="name-cell">${esc(p.name)}</td>
           <td>${esc(p.age)}</td>
           <td>${esc(p.diagnosis)}</td>
-          <td>${decisionBadge(p.decision)}</td>
+          <td style="max-width:200px;white-space:normal;font-size:0.78rem;color:var(--text-muted)">${decisionBadge(p.decision)}</td>
           <td>${hbBadge(p.hb)}</td>
           <td>${esc(p.plt)}</td>
           <td>${inrBadge(p.inr)}</td>
