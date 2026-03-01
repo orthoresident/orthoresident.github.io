@@ -44,7 +44,7 @@
   }
   body.light .stat-card         { background:rgba(255,255,255,0.9); box-shadow:0 1px 6px rgba(0,0,0,0.07); }
   body.light .sync-status       { background:rgba(255,255,255,0.85); }
-  body.light .table-wrapper     { background:#fff; border-color:rgba(0,0,0,0.1); box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+  body.light .table-scroll      { background:#fff; border-color:rgba(0,0,0,0.1); box-shadow:0 2px 10px rgba(0,0,0,0.05); }
   body.light .header-row        { background:rgba(37,99,235,0.08) !important; border-bottom-color:rgba(37,99,235,0.15); }
   body.light .header-row th     { color:var(--accent-light) !important; }
   body.light .header-row th:hover { color:#1e293b; }
@@ -159,7 +159,8 @@
   .search-icon { position:absolute; left:13px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:0.95rem; }
 
   /* Table */
-  .table-wrapper { overflow-x:auto; border-radius:16px; border:1px solid var(--border); background:rgba(255,255,255,0.02); }
+  .table-scroll { overflow-x:auto; border-radius:16px; border:1px solid var(--border); background:rgba(255,255,255,0.02); }
+  .table-wrapper { overflow:visible; }
   table { width:100%; border-collapse:collapse; min-width:1600px; direction:rtl; }
 
   /* Header row */
@@ -301,7 +302,8 @@
     .logo-icon { width:24px !important; height:24px !important; font-size:12px !important; }
     .print-header-info { display:flex !important; justify-content:space-between; font-size:7pt !important; color:rgba(255,255,255,0.5); margin-bottom:4px; }
 
-    .table-wrapper { border-radius:0 !important; overflow:visible !important; border:1px solid rgba(37,99,235,0.3) !important; width:100% !important; }
+    .table-scroll { border-radius:0 !important; overflow:visible !important; border:1px solid rgba(37,99,235,0.3) !important; width:100% !important; }
+    .table-wrapper { overflow:visible !important; }
     table { min-width:unset !important; width:100% !important; table-layout:fixed !important; border-collapse:collapse !important; font-size:7pt !important; }
     th, td, .badge, .room-cell, .name-cell { font-size:7pt !important; line-height:1.3 !important; }
     .header-row { background:rgba(37,99,235,0.45) !important; }
@@ -373,8 +375,8 @@
       <div class="stat-info"><label>Waiting</label><strong id="statPending" style="color:#f59e0b">0</strong></div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon">🔄</div>
-      <div class="stat-info"><label>Last Sync</label><strong id="statSync" style="font-size:0.88rem;color:rgba(255,255,255,0.55)">—</strong></div>
+      <div class="stat-icon">✔️</div>
+      <div class="stat-info"><label>Done</label><strong id="statSync" style="font-size:1.35rem;color:#10b981">0</strong></div>
     </div>
   </div>
 
@@ -387,6 +389,7 @@
   </div>
 
   <div class="print-header-info" style="display:none" id="printHeaderInfo"></div>
+  <div class="table-scroll">
   <div class="table-wrapper">
     <table id="patientTable">
       <thead>
@@ -406,7 +409,7 @@
           <th onclick="sortBy('rft')">RFT</th>
           <th onclick="sortBy('abo')">ABO</th>
           <th onclick="sortBy('vir')">VIR</th>
-          <th onclick="sortBy('anesthesia')">Anesthesia</th>
+          <th onclick="sortBy('anesthesia')">Status</th>
           <th onclick="sortBy('skin')">Skin</th>
           <th onclick="sortBy('notes')">Notes</th>
           <th class="th-center">Actions</th>
@@ -455,6 +458,7 @@
       <div class="icon">🏥</div>
       <p>No patient records. Add a patient or sync from Google Sheets.</p>
     </div>
+  </div>
   </div>
 </div>
 
@@ -525,11 +529,12 @@
         <input type="text" id="f_vir" placeholder="Negative / Positive">
       </div>
       <div class="form-group">
-        <label>Anesthesia</label>
+        <label>Status</label>
         <select id="f_anesthesia">
           <option value="">Select…</option>
           <option>Accepted</option>
           <option>Waiting</option>
+          <option>Done</option>
         </select>
       </div>
       <div class="form-group">
@@ -740,7 +745,7 @@ function doPost(e) {
         <tr data-id="${p.id}">
           <td class="td-center select-col"><input type="checkbox" class="row-check" value="${p.id}" onchange="updateCheckAllState()"></td>
           <td class="room-cell">${esc(p.room)}</td>
-          <td>${p.admission ? esc(p.admission.split('T')[0]) : esc('')}</td>
+          <td>${p.admission ? esc(p.admission) : esc('')}</td>
           <td class="name-cell">${esc(p.name)}</td>
           <td>${esc(p.age)}</td>
           <td>${esc(p.diagnosis)}</td>
@@ -813,10 +818,12 @@ function doPost(e) {
 
   function updateStats() {
     document.getElementById('statTotal').textContent = patients.length;
-    const adm = patients.filter(p=>{ const d=(p.anesthesia||'').toLowerCase(); return d.includes('Accepted')||d.includes('قبول')||d.includes('approved')||d.includes('accept'); }).length;
-    const pnd = patients.filter(p=>{ const d=(p.anesthesia||'').toLowerCase(); return d.includes('Waiting')||d.includes('wait')||d.includes('انتظار')||d.includes('hold'); }).length;
+    const adm  = patients.filter(p=>{ const d=(p.anesthesia||'').toLowerCase(); return d.includes('accepted')||d.includes('قبول')||d.includes('approved')||d.includes('accept'); }).length;
+    const pnd  = patients.filter(p=>{ const d=(p.anesthesia||'').toLowerCase(); return d.includes('waiting')||d.includes('wait')||d.includes('انتظار')||d.includes('hold'); }).length;
+    const done = patients.filter(p=>{ const d=(p.anesthesia||'').toLowerCase(); return d.includes('done')||d.includes('منتهي'); }).length;
     document.getElementById('statAccepted').textContent = adm;
     document.getElementById('statPending').textContent  = pnd;
+    document.getElementById('statSync').textContent     = done;
   }
 
   function sortBy(key) {
@@ -841,6 +848,7 @@ function doPost(e) {
   }
 
   function openEditModal(id) {
+    id = parseInt(id);
     const p = patients.find(x=>x.id===id); if(!p) return;
     editingId = id;
     document.getElementById('modalTitle').textContent = 'Edit Patient Record';
@@ -860,7 +868,8 @@ function doPost(e) {
     const data = getFormData();
     if (!data.name) { showToast('❌ Name is required','error'); return; }
     if (editingId) {
-      const idx = patients.findIndex(p=>p.id===editingId);
+      const idx = patients.findIndex(p=>parseInt(p.id)===parseInt(editingId));
+      if (idx === -1) { showToast('❌ Patient not found','error'); return; }
       patients[idx] = { ...patients[idx], ...data };
       syncToSheets('update', patients[idx]);
       showToast('✅ Patient record updated','success');
@@ -910,7 +919,7 @@ function doPost(e) {
       const json = await res.json();
       if (json.data) {
         patients = json.data.map((row,i) => ({
-          id:i+1, room:row.Room||'', admission:row.Admission||'', name:row.Name||'', age:row.Age||'',
+          id:i+1, room:row.Room||'', admission:(row.Admission||'').toString().split('T')[0], name:row.Name||'', age:row.Age||'',
           diagnosis:row.Diagnosis||'', decision:row.Decision||'',
           hb:row.Hb||'', plt:row.Plt||'', inr:row.INR||'',
           lft:row.LFT||'', rft:row.RFT||'', abo:row.ABO||'',
@@ -929,9 +938,7 @@ function doPost(e) {
     if (connected) document.getElementById('syncDot').classList.remove('syncing');
   }
   function setSyncing(v) { document.getElementById('syncDot').classList.toggle('syncing',v); }
-  function updateLastSync() {
-    document.getElementById('statSync').textContent = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-  }
+  function updateLastSync() { /* no-op: Done count updated in updateStats */ }
 
   function saveConfig() {
     sheetsUrl = document.getElementById('sheetsUrl').value.trim();
@@ -972,9 +979,12 @@ function doPost(e) {
     if (!isOpen) { popup.classList.add('open'); btn.classList.add('active'); }
     else btn.classList.remove('active');
   }
-  document.addEventListener('click', () => {
-    document.querySelectorAll('.date-filter-popup.open').forEach(p => p.classList.remove('open'));
-    const btn = document.getElementById('dateFilterBtn'); if(btn) btn.classList.remove('active');
+  document.addEventListener('click', (e) => {
+    // Only close if click is outside the popup AND outside the button
+    if (!e.target.closest('.date-filter-popup') && !e.target.closest('.date-filter-btn')) {
+      document.querySelectorAll('.date-filter-popup.open').forEach(p => p.classList.remove('open'));
+      const btn = document.getElementById('dateFilterBtn'); if(btn) btn.classList.remove('active');
+    }
   });
   function onDateSingleChange() {
     const v = document.getElementById('fil_date_single').value;
@@ -1102,4 +1112,4 @@ function doPost(e) {
   renderTable();
 </script>
 </body>
-            </html>
+        </html>
