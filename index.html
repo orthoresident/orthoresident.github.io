@@ -412,6 +412,15 @@
           <th onclick="sortBy('age')">Age</th>
           <th onclick="sortBy('diagnosis')">Diagnosis</th>
           <th onclick="sortBy('decision')">Decision</th>
+          <th onclick="sortBy('hb')">HB</th>
+          <th onclick="sortBy('plt')">PLT</th>
+          <th onclick="sortBy('inr')">INR</th>
+          <th onclick="sortBy('sgot')">SGOT</th>
+          <th onclick="sortBy('sgpt')">SGPT</th>
+          <th onclick="sortBy('screatinine')">S.Creatinine</th>
+          <th onclick="sortBy('albumin')">Albumin</th>
+          <th onclick="sortBy('bloodgroup')">Blood Group</th>
+          <th onclick="sortBy('virology')">Virology</th>
           <th onclick="sortBy('anesthesia')">Status</th>
           <th onclick="sortBy('skin')">Skin</th>
           <th onclick="sortBy('notes')">Notes</th>
@@ -441,6 +450,15 @@
           <th><input type="text" id="fil_age" placeholder="🔍" oninput="renderTable()"></th>
           <th><input type="text" id="fil_diagnosis" placeholder="🔍" oninput="renderTable()"></th>
           <th><input type="text" id="fil_decision" placeholder="🔍" oninput="renderTable()"></th>
+          <th><input type="text" id="fil_hb" placeholder="🔍" oninput="renderTable()"></th>
+          <th><input type="text" id="fil_plt" placeholder="🔍" oninput="renderTable()"></th>
+          <th><input type="text" id="fil_inr" placeholder="🔍" oninput="renderTable()"></th>
+          <th><input type="text" id="fil_sgot" placeholder="🔍" oninput="renderTable()"></th>
+          <th><input type="text" id="fil_sgpt" placeholder="🔍" oninput="renderTable()"></th>
+          <th><input type="text" id="fil_screatinine" placeholder="🔍" oninput="renderTable()"></th>
+          <th><input type="text" id="fil_albumin" placeholder="🔍" oninput="renderTable()"></th>
+          <th><input type="text" id="fil_bloodgroup" placeholder="🔍" oninput="renderTable()"></th>
+          <th><input type="text" id="fil_virology" placeholder="🔍" oninput="renderTable()"></th>
           <th><input type="text" id="fil_anesthesia" placeholder="🔍" oninput="renderTable()"></th>
           <th><input type="text" id="fil_skin" placeholder="🔍" oninput="renderTable()"></th>
           <th><input type="text" id="fil_notes" placeholder="🔍" oninput="renderTable()"></th>
@@ -489,6 +507,45 @@
         <label>Decision</label>
         <input type="text" id="f_decision" placeholder="e.g. Admitted, Pending...">
       </div>
+      <div class="form-group full-width" style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px">
+        <label style="font-size:0.8rem;color:var(--accent-light)">🧪 Laboratory Results</label>
+      </div>
+      <div class="form-group">
+        <label>HB</label>
+        <input type="text" id="f_hb" placeholder="g/dL">
+      </div>
+      <div class="form-group">
+        <label>PLT</label>
+        <input type="text" id="f_plt" placeholder="×10³/μL">
+      </div>
+      <div class="form-group">
+        <label>INR</label>
+        <input type="text" id="f_inr" placeholder="ratio">
+      </div>
+      <div class="form-group">
+        <label>SGOT</label>
+        <input type="text" id="f_sgot" placeholder="U/L">
+      </div>
+      <div class="form-group">
+        <label>SGPT</label>
+        <input type="text" id="f_sgpt" placeholder="U/L">
+      </div>
+      <div class="form-group">
+        <label>S.Creatinine</label>
+        <input type="text" id="f_screatinine" placeholder="mg/dL">
+      </div>
+      <div class="form-group">
+        <label>Albumin</label>
+        <input type="text" id="f_albumin" placeholder="g/dL">
+      </div>
+      <div class="form-group">
+        <label>Blood Group</label>
+        <input type="text" id="f_bloodgroup" placeholder="e.g. A+">
+      </div>
+      <div class="form-group">
+        <label>Virology</label>
+        <input type="text" id="f_virology" placeholder="e.g. Non-reactive">
+      </div>
       <div class="form-group">
         <label>Status</label>
         <select id="f_anesthesia">
@@ -526,7 +583,7 @@
       <ol class="steps">
         <li>One Google Spreadsheet with one sheet per unit (sheet names must match exactly the unit names below).</li>
         <li>Each sheet must have headers in row 1:<br>
-          <strong>ID, Room, Admission, Name, Age, Diagnosis, Decision, Anesthesia, Skin, Notes</strong></li>
+          <strong>ID, Room, Admission, Name, Age, Diagnosis, Decision, HB, PLT, INR, SGOT, SGPT, SCreatinine, Albumin, BloodGroup, Virology, Anesthesia, Skin, Notes</strong></li>
         <li>The <strong>ID</strong> column must contain a unique value per patient (e.g. auto-increment or UUID). It is not shown in the table.</li>
         <li>Deploy a single Apps Script Web App for the whole spreadsheet. Paste the script code below, deploy, then paste the URL here.</li>
       </ol>
@@ -787,8 +844,8 @@ function toggleTheme() { applyTheme(document.body.classList.contains('light') ? 
 // ════════════════════════════════════════════════════════════
 // COLUMNS
 // ════════════════════════════════════════════════════════════
-const COLS   = ['room','admission','name','age','diagnosis','decision','anesthesia','skin','notes'];
-const FIELDS = ['room','admission','name','age','diagnosis','decision','anesthesia','skin','notes'];
+const COLS   = ['room','admission','name','age','diagnosis','decision','hb','plt','inr','sgot','sgpt','screatinine','albumin','bloodgroup','virology','anesthesia','skin','notes'];
+const FIELDS = ['room','admission','name','age','diagnosis','decision','hb','plt','inr','sgot','sgpt','screatinine','albumin','bloodgroup','virology','anesthesia','skin','notes'];
 
 // ════════════════════════════════════════════════════════════
 // RENDER
@@ -854,6 +911,15 @@ function renderTable() {
         <td>${esc(p.age)}</td>
         <td style="max-width:500px;white-space:normal;font-size:1rem">${esc(p.diagnosis)}</td>
         <td style="max-width:500px;white-space:normal;font-size:1rem">${decisionBadge(p.decision)}</td>
+        <td>${esc(p.hb)}</td>
+        <td>${esc(p.plt)}</td>
+        <td>${esc(p.inr)}</td>
+        <td>${esc(p.sgot)}</td>
+        <td>${esc(p.sgpt)}</td>
+        <td>${esc(p.screatinine)}</td>
+        <td>${esc(p.albumin)}</td>
+        <td>${esc(p.bloodgroup)}</td>
+        <td>${esc(p.virology)}</td>
         <td class="status-cell">${esc(p.anesthesia)}</td>
         <td>${esc(p.skin)}</td>
         <td style="max-width:200px;white-space:normal;font-size:0.78rem;">${esc(p.notes)}</td>
@@ -972,6 +1038,8 @@ function toSheetRow(p) {
   return {
     ID:p._uid, Room:p.room, Admission:p.admission, Name:p.name, Age:p.age,
     Diagnosis:p.diagnosis, Decision:p.decision,
+    HB:p.hb, PLT:p.plt, INR:p.inr, SGOT:p.sgot, SGPT:p.sgpt,
+    SCreatinine:p.screatinine, Albumin:p.albumin, BloodGroup:p.bloodgroup, Virology:p.virology,
     Anesthesia:p.anesthesia, Skin:p.skin, Notes:p.notes
   };
 }
@@ -1007,11 +1075,26 @@ async function syncFromSheets() {
         seen.set(uid, {
           _uid:      uid,
           room:      row.Room||'',
-          admission: String(row.Admission||'').trim(),
+          admission: (() => {
+            const d = String(row.Admission||'').trim();
+            // Convert D-M-YYYY to YYYY-MM-DD for consistent filtering
+            const m = d.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+            if (m) return m[3] + '-' + m[2].padStart(2,'0') + '-' + m[1].padStart(2,'0');
+            return d; // already yyyy-mm-dd or empty
+          })(),
           name:      row.Name||'',
           age:       row.Age||'',
           diagnosis: row.Diagnosis||'',
           decision:  row.Decision||'',
+          hb:        row.HB||'',
+          plt:       row.PLT||'',
+          inr:       row.INR||'',
+          sgot:      row.SGOT||'',
+          sgpt:      row.SGPT||'',
+          screatinine:row.SCreatinine||'',
+          albumin:   row.Albumin||'',
+          bloodgroup:row.BloodGroup||'',
+          virology:  row.Virology||'',
           anesthesia:row.Anesthesia||'',
           skin:      row.Skin||'',
           notes:     row.Notes||''
@@ -1058,9 +1141,22 @@ async function testConnection() {
   showToast('🔌 Testing...','info');
   try {
     const r = await fetch(url + '?sheet=' + encodeURIComponent(UNITS[0]) + '&test=1&t=' + Date.now());
-    await r.json();
-    showToast('✅ Connection successful!','success');
-  } catch(e) { showToast('❌ Cannot connect – check URL & permissions','error'); }
+    const text = await r.text();
+    let parsed;
+    try { parsed = JSON.parse(text); } catch(pe) {
+      showToast('❌ Bad response: ' + text.slice(0,120),'error');
+      console.error('Raw response:', text);
+      return;
+    }
+    if (parsed.error) {
+      showToast('❌ Script error: ' + parsed.error,'error');
+    } else {
+      showToast('✅ Connected! Got ' + (parsed.data ? parsed.data.length + ' rows' : 'response'),'success');
+    }
+  } catch(e) {
+    showToast('❌ ' + (e.message || 'Cannot connect - check URL & permissions'),'error');
+    console.error('Connection error:', e);
+  }
 }
 
 // ════════════════════════════════════════════════════════════
