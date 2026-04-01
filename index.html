@@ -55,7 +55,7 @@
   body.light .modal { background:#ffffff; box-shadow:0 20px 60px rgba(0,0,0,0.15); }
   body.light .modal-close { background:rgba(0,0,0,0.06); color:#1e293b; }
   body.light .modal-close:hover { background:rgba(220,38,38,0.1); color:var(--danger); }
-  body.light input[type="text"],body.light input[type="number"],body.light input[type="date"],body.light textarea,body.light select { background:rgba(0,0,0,0.04); border-color:rgba(0,0,0,0.13); color:#1e293b; }
+  body.light input[type="text"],body.light input[type="password"],body.light input[type="number"],body.light input[type="date"],body.light textarea,body.light select { background:rgba(0,0,0,0.04); border-color:rgba(0,0,0,0.13); color:#1e293b; }
   body.light input:focus,body.light textarea:focus,body.light select:focus { background:rgba(37,99,235,0.06); }
   body.light input::placeholder,body.light textarea::placeholder { color:rgba(30,41,59,0.4); }
   body.light select option { background:#ffffff; color:#1e293b; }
@@ -206,7 +206,7 @@
   .form-group.full-width { grid-column:1/-1; }
   .form-group.two-col { grid-column:span 2; }
   label { font-size:0.72rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; font-family:'Inter',sans-serif; }
-  input[type="text"],input[type="number"],input[type="date"],textarea,select { padding:9px 13px; background:rgba(255,255,255,0.06); border:1px solid var(--border); border-radius:8px; color:#fff; font-family:'Cairo',sans-serif; font-size:0.88rem; transition:border-color 0.2s,background 0.2s; direction:rtl; }
+  input[type="text"],input[type="password"],input[type="number"],input[type="date"],textarea,select { padding:9px 13px; background:rgba(255,255,255,0.06); border:1px solid var(--border); border-radius:8px; color:#fff; font-family:'Cairo',sans-serif; font-size:0.88rem; transition:border-color 0.2s,background 0.2s; direction:rtl; }
   input:focus,textarea:focus,select:focus { outline:none; border-color:var(--accent); background:rgba(37,99,235,0.08); }
   input::placeholder,textarea::placeholder { color:var(--text-muted); }
   select option { background:var(--navy-mid); color:#fff; }
@@ -637,16 +637,8 @@ function json(obj) {
 
 <script>
 // ════════════════════════════════════════════════════════════
-// FIREBASE CONFIG — replace with your own project credentials
+// FIREBASE INIT (compat SDK loaded via <script> tags in <head>)
 // ════════════════════════════════════════════════════════════
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
     apiKey: "AIzaSyA1PWHN0xpHvOHAehHE6BX6TeQRyp8qbww",
     authDomain: "orthoresident-642e8.firebaseapp.com",
@@ -657,9 +649,9 @@ function json(obj) {
     measurementId: "G-M6WMT6LXYP"
   };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db   = firebase.firestore();
 
 // ════════════════════════════════════════════════════════════
 // UNITS — sheet names must match exactly in your spreadsheet
