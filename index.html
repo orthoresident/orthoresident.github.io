@@ -330,7 +330,7 @@
 <div id="loginScreen">
   <div id="loginBox">
     <div class="login-logo">🏥</div>
-    <div class="login-title">Ibn Tharwat Hospital</div>
+    <div class="login-title">Ibn Tharwat Hospital Management System</div>
     <div class="login-subtitle">نظام إدارة بيانات المرضى</div>
     <div class="login-error" id="loginError"></div>
     <div class="form-group" style="margin-bottom:14px">
@@ -339,7 +339,7 @@
     </div>
     <div class="form-group" style="margin-bottom:22px">
       <label>Password</label>
-      <input type="password" id="loginPassword" placeholder="••••••••" style="direction:ltr" onkeydown="if(event.key==='Enter')doLogin()">
+      <input type="password" id="loginPassword" placeholder="" style="direction:ltr" onkeydown="if(event.key==='Enter')doLogin()">
     </div>
     <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="doLogin()">🔐 Sign In</button>
   </div>
@@ -1324,7 +1324,7 @@ function executePrint() {
       const pb=idx<rooms.length-1?'page-break-after:always':'';
       return `<div style="${pb};padding:6mm 8mm 5mm 8mm;background:#0a1628;min-height:100vh">
         <div style="text-align:center;margin-bottom:6mm;padding-bottom:4mm;border-bottom:2px solid rgba(37,99,235,0.5)">
-          <div style="font-size:9pt;color:rgba(255,255,255,0.45);margin-bottom:2pt">🏥 Ibn Tharwat Hospital &nbsp;·&nbsp; ${currentUnit} &nbsp;·&nbsp; Printed: ${now}</div>
+          <div style="font-size:9pt;color:rgba(255,255,255,0.45);margin-bottom:2pt">🏥 Ibn Tharwat Hospital Management System &nbsp;·&nbsp; ${currentUnit} &nbsp;·&nbsp; Printed: ${now}</div>
           <div style="font-size:26pt;font-weight:900;color:#3b82f6;letter-spacing:0.04em">Room ${room}</div>
           <div style="font-size:9pt;color:rgba(255,255,255,0.45);margin-top:2pt">${pts.length} patient(s)</div>
         </div>
@@ -1362,7 +1362,7 @@ function executePrint() {
   } else {
     // ── ALL / SELECTED: normal print ──
     const info=document.getElementById('printHeaderInfo');
-    info.innerHTML=`<span>Ibn Tharwat Hospital – ${currentUnit}</span><span>Printed: ${now} &nbsp;|&nbsp; ${toPrint.length} patient(s)</span>`;
+    info.innerHTML=`<span>Ibn Tharwat Hospital Management System – ${currentUnit}</span><span>Printed: ${now} &nbsp;|&nbsp; ${toPrint.length} patient(s)</span>`;
     info.style.display='flex';
     const tbody=document.getElementById('tableBody');
     const allRows=[...tbody.querySelectorAll('tr')];
