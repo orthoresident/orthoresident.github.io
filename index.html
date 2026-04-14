@@ -412,17 +412,7 @@
           <th onclick="sortBy('age')">Age</th>
           <th onclick="sortBy('diagnosis')">Diagnosis</th>
           <th onclick="sortBy('decision')">Decision</th>
-          <th onclick="sortBy('hb')">HB</th>
-          <th onclick="sortBy('plt')">PLT</th>
-          <th onclick="sortBy('inr')">INR</th>
-          <th onclick="sortBy('sgot')">AST</th>
-          <th onclick="sortBy('sgpt')">ALT</th>
-          <th onclick="sortBy('screatinine')">S.Cr</th>
-          <th onclick="sortBy('albumin')">Alb</th>
-          <th onclick="sortBy('bloodgroup')">BlG</th>
-          <th onclick="sortBy('virology')">Vir</th>
           <th onclick="sortBy('anesthesia')">Status</th>
-          <th onclick="sortBy('skin')">Extra</th>
           <th onclick="sortBy('notes')">Notes</th>
           <th class="th-center" id="actionsHeader">Actions</th>
         </tr>
@@ -450,17 +440,7 @@
           <th><input type="text" id="fil_age" placeholder="🔍" oninput="renderTable()"></th>
           <th><input type="text" id="fil_diagnosis" placeholder="🔍" oninput="renderTable()"></th>
           <th><input type="text" id="fil_decision" placeholder="🔍" oninput="renderTable()"></th>
-          <th><input type="text" id="fil_hb" placeholder="🔍" oninput="renderTable()"></th>
-          <th><input type="text" id="fil_plt" placeholder="🔍" oninput="renderTable()"></th>
-          <th><input type="text" id="fil_inr" placeholder="🔍" oninput="renderTable()"></th>
-          <th><input type="text" id="fil_sgot" placeholder="🔍" oninput="renderTable()"></th>
-          <th><input type="text" id="fil_sgpt" placeholder="🔍" oninput="renderTable()"></th>
-          <th><input type="text" id="fil_screatinine" placeholder="🔍" oninput="renderTable()"></th>
-          <th><input type="text" id="fil_albumin" placeholder="🔍" oninput="renderTable()"></th>
-          <th><input type="text" id="fil_bloodgroup" placeholder="🔍" oninput="renderTable()"></th>
-          <th><input type="text" id="fil_virology" placeholder="🔍" oninput="renderTable()"></th>
           <th><input type="text" id="fil_anesthesia" placeholder="🔍" oninput="renderTable()"></th>
-          <th><input type="text" id="fil_skin" placeholder="🔍" oninput="renderTable()"></th>
           <th><input type="text" id="fil_notes" placeholder="🔍" oninput="renderTable()"></th>
           <th><input type="text" disabled></th>
         </tr>
@@ -911,17 +891,7 @@ function renderTable() {
         <td>${esc(p.age)}</td>
         <td style="max-width:500px;white-space:normal;font-size:1rem">${esc(p.diagnosis)}</td>
         <td style="max-width:500px;white-space:normal;font-size:1rem">${decisionBadge(p.decision)}</td>
-        <td>${esc(p.hb)}</td>
-        <td>${esc(p.plt)}</td>
-        <td>${esc(p.inr)}</td>
-        <td>${esc(p.sgot)}</td>
-        <td>${esc(p.sgpt)}</td>
-        <td>${esc(p.screatinine)}</td>
-        <td>${esc(p.albumin)}</td>
-        <td>${esc(p.bloodgroup)}</td>
-        <td>${esc(p.virology)}</td>
         <td class="status-cell">${esc(p.anesthesia)}</td>
-        <td>${esc(p.skin)}</td>
         <td style="max-width:200px;white-space:normal;font-size:0.78rem;">${esc(p.notes)}</td>
         ${canEdit ? `<td class="td-center"><div class="actions-cell">
           <button class="btn btn-ghost btn-sm" onclick="openEditModal('${p._uid}')">✏️</button>
